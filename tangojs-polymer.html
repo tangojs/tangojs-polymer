@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="tangojs-polymer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `tangojs-polymer`
+     * Polymer mixins for TangoJS
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TangojsPolymer extends Polymer.Element {
+      static get is() { return 'tangojs-polymer'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'tangojs-polymer'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(TangojsPolymer.is, TangojsPolymer);
+  </script>
+</dom-module>
