@@ -1,0 +1,27 @@
+{
+  "name": "tangojs-polymer",
+  "version": "0.1.0",
+  "description": "Polymer mixins for TangoJS",
+  "authors":[
+    "Vincent Hardion <vincent.hardion@maxiv.lu.se>"
+  ],
+  "keywords": [
+    "web-component",
+    "polymer",
+    "tangojs"
+  ],
+  "license": "https://raw.githubusercontent.com/tangojs/tangojs-polymer/master/LICENSE",
+  "homepage": "https://github.com/tangojs/tangojs-polymer/",
+  "main": "tangojs-polymer.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}
