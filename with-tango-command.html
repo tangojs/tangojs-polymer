@@ -1,0 +1,86 @@
+<!--
+@license
+-->
+
+<link rel="import" href="../polymer/lib/utils/mixin.html">
+<link rel="import" href="./with-tango.html">
+
+<script type='text/javascript'>
+
+  var Tangojs = window.Tangojs || {};
+
+  /**
+    Adds support for Tangojs Command. This mixin must be assigned to all elements that need to access to Tangojs command.
+   
+    Prototype that mixes does not need to implement any function.
+    
+    Extra function and properties you can bind with:
+      - result: result of the last execution
+      - name: name of the command
+      - execute: feature to bind with an event
+   
+
+    ### Example:
+    #### HTML:
+       <template>
+         <paper-button raised class="indigo" on-click="execute">[[name]]</paper-button>
+       </template>
+
+    #### JavaScript:
+       class TangojsButton extends Tangojs.withTangoCommand(Polymer.Element) {
+         static get is() { return 'tangojs-button'; }
+       }
+
+       window.customElements.define(TangojsButton.is, TangojsButton);
+
+    When above element is declared as follows:
+       <tangojs-button model="sys/tg_test/1/SwitchStates"></tangojs-button>
+   
+    @polymer
+    @mixinFunction
+   */
+
+
+  Tangojs.withTangoCommand = Polymer.dedupingMixin( (base) => 
+    
+    // Note that this scope is executed exactly once! Do not try to put hidden variables here.
+    class extends Tangojs.withTango(base) {
+  
+      constructor() {
+        super();
+      }
+  
+      static get properties() {
+        return {
+  	arguments: {
+  	  type: String,
+  	},
+        };
+      }
+  
+      createProxy(model) {
+        const [_, devname, name] = model.match(/^(.+)\/([A-Za-z0-9_]+)$/)
+        console.log('creating a proxy')
+        return new tangojs.core.api.CommandProxy(devname, name)
+      }
+  
+      proxyChanged(proxy){
+        this.proxy[this.model].get_info().then(i => this._setInfo(i))
+      }
+  
+      infoChanged(info) { 
+        this.name = info.cmd_name
+      }
+  
+      execute(event){
+        const devDataIn = new tangojs.core.api.DeviceData(this.arguments)
+        console.log('command proxy:'+this.proxy)
+        this.proxy[this.model].inout(devDataIn).then(devDataOut => {
+          this.result = devDataOut
+  	// What to do else?
+  	//this.dispatchEvent(new CommandButtonResultEvent(devDataOut))
+        })
+      }	    
+
+    });
+</script>
