@@ -1,0 +1,87 @@
+<!--
+@license
+-->
+
+<link rel="import" href="../polymer/lib/utils/mixin.html">
+<link rel="import" href="./with-tango.html">
+
+<script type='text/javascript'>
+
+  var Tangojs = window.Tangojs || {};
+
+  /**
+    Adds support for Tangojs Device. This mixin must be assigned to all elements that need to access to Tangojs device.
+   
+    Prototype that mixes does not need to implement any function.
+    
+    Extra function and properties you can bind with:
+      - attributes: list of all the attributes of this device
+      - commands: list of all the command names 
+   
+
+    ### Example:
+    #### HTML:
+       <template>
+         <div>Device {{info.name}}</div>
+         <tangojs-led model="{{ model }}/state" poll-period=3000></tangojs-led>
+         <template is="dom-repeat" filter="isScalar" items="{{attrs}}">
+           <tangojs-input model="{{ model }}/[[item.name]]" poll-period=3000></tangojs-input>
+         </template>
+
+         <template is="dom-repeat" items="{{commands}}">
+           <tangojs-button model="{{ model }}/[[item.cmd_name]]"</tangojs-button>
+         </template>
+       </template>
+
+    #### JavaScript:
+       class TangojsForm extends Tangojs.withTangoDevice(Polymer.Element) {
+         static get is() { return 'tangojs-form'; }
+       }
+
+       window.customElements.define(TangojsForm.is, TangojsForm);
+
+    When above element is declared as follows:
+       <tangojs-form model="sys/tg_test/1"></tangojs-form>
+   
+    @polymer
+    @mixinFunction
+   */
+
+
+  Tangojs.withTangoDevice = Polymer.dedupingMixin( (base) => 
+  
+    // Note that this scope is executed exactly once! Do not try to put hidden variables here.
+    class extends Tangojs.withTango(base) {
+      constructor() {
+        super();
+      }
+
+      static get properties(){
+	return {
+          attrs:{
+            type: Array,
+	  },
+          commands:{
+            type: Array,
+	  }
+	}
+      }
+
+      createProxy(model) {
+        console.log('creating a proxy')
+        const proxy =  new tangojs.core.api.DeviceProxy(model)
+        // update the info
+        // Probably to refactor
+        proxy.get_info().then(i => this._setInfo(i))
+        return proxy
+      }
+
+      proxyChanged(){
+
+	this.proxy[this.model].get_attribute_info().then( list => this.attrs = list)
+	this.proxy[this.model].command_list_query().then(list => this.commands = list)
+
+      }
+
+    });
+</script>
