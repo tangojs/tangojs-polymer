@@ -1,6 +1,6 @@
 {
   "name": "tangojs-polymer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Polymer mixins for TangoJS",
   "authors":[
     "Vincent Hardion <vincent.hardion@maxiv.lu.se>"
