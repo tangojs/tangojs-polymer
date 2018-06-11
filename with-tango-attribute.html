@@ -116,7 +116,7 @@
           this.unit = info.unit
   
         } else {
-  	this.unit = unit
+  	  this.unit = unit
         }
   
         this.writable = info.writable
@@ -128,7 +128,6 @@
        *  READING Function
        *
        */
-  
       readProxy(proxy) {
         //console.log('reading a proxy.')
         return proxy.read()
@@ -137,7 +136,7 @@
       onModelRead (deviceAttributes) {
         const attribute = deviceAttributes[this.model];
         this.attribute = attribute;
-        this.updateValue(attribute)
+        this.updateValue(this.attribute)
       }
   
       onModelError(error) {
@@ -180,7 +179,10 @@
           this.value = data.value
         }
         if(this.writable){
-  	this.setPoint = data.w_value
+          
+  	  if( this.setPoint != data.w_value){
+  	    this.setPoint = data.w_value
+          }
         }
       }
   

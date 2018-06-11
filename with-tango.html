@@ -51,7 +51,6 @@
 
       onModelChange(model, oldValue) {
         if (model) {
-          console.log('model changed '+model)
           this._setProxy(
             (Array.isArray(model) ? model : [model])
               .reduce((p, m) => (p[m] = this.createProxy(m), p), {})
